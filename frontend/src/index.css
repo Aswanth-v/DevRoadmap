@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🎨 Deep Navy Custom Palette */
+:root {
+  --deepnavy-50:  #E5E6FF;
+  --deepnavy-100: #C9CAFF;
+  --deepnavy-200: #A3A6FF;
+  --deepnavy-300: #7D82FF;
+  --deepnavy-400: #575EFF;
+  --deepnavy-500: #2F38FF;
+  --deepnavy-600: #1418D9;
+  --deepnavy-700: #0F13A6;
+  --deepnavy-800: #090C73;
+  --deepnavy-900: #00002D;
+}
+
+/* 🌗 Optional Light Navy Variant */
+:root {
+  --lightnavy-50:  #F5F6FF;
+  --lightnavy-100: #E8EAFF;
+  --lightnavy-200: #D0D4FF;
+  --lightnavy-300: #A8ADFF;
+  --lightnavy-400: #8086FF;
+  --lightnavy-500: #585FFF;
+  --lightnavy-600: #2F38FF;
+  --lightnavy-700: #1418D9;
+  --lightnavy-800: #0F13A6;
+  --lightnavy-900: #00002D;
+}
+
+/* 🪄 Optional global styling */
+body {
+  @apply bg-[var(--deepnavy-900)] text-[var(--deepnavy-50)] font-sans;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--deepnavy-500);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+.btn-primary:hover {
+  background-color: var(--deepnavy-400);
+}
+
+/* Example card style */
+.card {
+  background-color: var(--deepnavy-800);
+  color: var(--deepnavy-50);
+  border: 1px solid var(--deepnavy-700);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
