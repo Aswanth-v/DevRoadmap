@@ -43,7 +43,7 @@ const Favorites = () => {
       >
         ▶ Watch Video
       </a>
-      <div className="pt-5 " onClick={()=>toggleLike(v)}>
+      <div className="pt-5 cursor-pointer" onClick={()=>toggleLike(v)}>
        {favorites ? (
                           <AiFillHeart className="text-red-500 w-6 h-6 " />
                         ) : (
