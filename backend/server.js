@@ -6,6 +6,7 @@ import cors from "cors";
 import authRouter from "./routes/authRouter.js";
 import adminRouter from './routes/adminRouter.js'
 import showingRouter from './routes/showingRoute.js'
+import aiRouter from "./routes/aiRoute.js"
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/admin", adminRouter);
 app.use("/user", showingRouter);
-
+app.use("/api/ai", aiRouter );
 
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
@@ -42,3 +43,4 @@ mongoose
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
+console.log(process.env.HF_API_KEY ? "HF key loaded😘" : "HF key missing");
