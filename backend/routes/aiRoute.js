@@ -1,25 +1,36 @@
 import express from "express";
-import { InferenceClient } from "@huggingface/inference";
+import OpenAI from "openai";
 
 const router = express.Router();
-const client = new InferenceClient({ accessToken: process.env.HF_API_KEY });
+
+const client = new OpenAI({
+  baseURL: "https://router.huggingface.co/v1",
+  apiKey: process.env.HF_API_KEY,
+});
 
 router.post("/chat", async (req, res) => {
   const { message } = req.body;
-  if (!message) return res.status(400).json({ error: "Message is required" });
+
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
+  }
 
   try {
-    const output = await client.textGeneration({
-      model: "google/flan-t5-small", // free-tier compatible
-      inputs: message,
-      parameters: { max_new_tokens: 150, temperature: 0.7 },
+    const completion = await client.chat.completions.create({
+      model: "moonshotai/Kimi-K2-Instruct-0905",
+      messages: [
+        { role: "user", content: message }
+      ],
+      temperature: 0.7,
+      max_tokens: 200,
     });
 
-    const reply = output[0]?.generated_text || "AI did not respond";
+    const reply = completion.choices[0].message.content;
+
     res.json({ reply });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "AI service unavailable" });
+  } catch (err) {
+    console.error("AI error:", err.message);
+    res.status(500).json({ error: "AI service failed" });
   }
 });
 
