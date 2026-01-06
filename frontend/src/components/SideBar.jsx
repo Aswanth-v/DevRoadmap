@@ -35,6 +35,7 @@ export default function FloatingActions() {
         <div className="relative group flex justify-center">
          <Link to="/fav">
   <button
+   onClick={LoginFirst}
     className="w-[clamp(40px,4vw,60px)] h-[clamp(40px,4vw,60px)]
     flex items-center justify-center rounded-full bg-pink-500 hover:bg-pink-600 transition shadow-[0_0_20px_rgba(255,0,150,0.6)]"
   >
