@@ -32,7 +32,7 @@ function AskAI() {
         `}
       >
         <div className="flex justify-between items-center mb-2">
-          <span className="font-medium">AI Assistant</span>
+          <span className="font-medium text-neutral-950">AI Assistant</span>
           <button onClick={() => setOpen(false)}>x</button>
         </div>
 
@@ -42,7 +42,7 @@ function AskAI() {
             placeholder="Ask your doubts..."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            className="flex-1 px-3 py-2 rounded-lg outline-none border"
+            className="flex-1 px-3 py-2 rounded-lg outline-none bg-transparent/85"
           />
 
           <button
@@ -50,7 +50,7 @@ function AskAI() {
               askAI();
               setQuestion("");
             }}
-            className="px-3 rounded-lg"
+            className="px-3 rounded-lg hover:bg-gradient-to-t"
           >
             <Send />
           </button>
