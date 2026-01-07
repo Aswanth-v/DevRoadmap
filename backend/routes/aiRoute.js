@@ -7,7 +7,6 @@ const client = new OpenAI({
   baseURL: "https://router.huggingface.co/v1",
   apiKey: process.env.HF_API_KEY,
 });
-
 /**
  * Utility: timeout wrapper
  */
@@ -31,23 +30,19 @@ router.post("/chat", async (req, res) => {
       error: "Message field is required",
     });
   }
-
   // 422 – wrong data type
   if (typeof message !== "string") {
     return res.status(422).json({
       error: "Message must be a string",
     });
   }
-
   // 400 – empty or whitespace
   if (!message.trim()) {
     return res.status(400).json({
       error: "Message cannot be empty",
     });
   }
-
-  /* -------------------- AI CALL -------------------- */
-
+  /* AI CALL */
   try {
     const completion = await withTimeout(
       client.chat.completions.create({
@@ -65,17 +60,14 @@ router.post("/chat", async (req, res) => {
       "Sorry, I could not generate a response.";
 
     return res.json({ reply });
-
   } catch (err) {
     console.error("AI error:", err);
-
     // 503 – AI timeout / upstream failure
     if (err.message === "AI_TIMEOUT") {
       return res.status(503).json({
         error: "AI service is currently unavailable. Please try again later.",
       });
     }
-
     // 500 – unknown server error
     return res.status(500).json({
       error: "Internal server error",
