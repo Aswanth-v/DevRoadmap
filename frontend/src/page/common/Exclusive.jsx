@@ -4,7 +4,7 @@ import VideoList from "../../components/VideoList";
 import AddVideoForm from "../../components/AddVideoForm";
 import { useNavigate } from "react-router-dom";
 import { LayoutDashboard, Home } from "lucide-react";
-
+import AiResponse from "../../components/AiResponse";
 const Exclusive = () => {
   const { user } = useSelector((state) => state.auth);
   const isAdmin = user?.role === "admin"; // true only for admin
@@ -46,6 +46,7 @@ const Exclusive = () => {
           </>
         )}
       </div>
+      <AiResponse/>
     </div>
   );
 };
