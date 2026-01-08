@@ -9,7 +9,7 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
   const [editData, setEditData] = useState(null);
 
   const dispatch = useDispatch();
-  const likedVideos = useSelector(state => state.favorites.videos);
+  const likedVideos = useSelector((state) => state.favorites.videos);
 
   // Fetch all videos
   const fetchVideos = async () => {
@@ -26,15 +26,14 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
   }, [refresh]);
 
   // Toggle like/unlike
- const toggleLike = (video) => {
-  const isLiked = likedVideos.find(v => v._id === video._id);
-  if (isLiked) {
-    dispatch(removeFromFavorites(video._id));
-  } else {
-    dispatch(addToFavorites(video));
-  }
-};
-
+  const toggleLike = (video) => {
+    const isLiked = likedVideos.find((v) => v._id === video._id);
+    if (isLiked) {
+      dispatch(removeFromFavorites(video._id));
+    } else {
+      dispatch(addToFavorites(video));
+    }
+  };
 
   // ADMIN: delete video
   const itemDelete = async (id) => {
@@ -43,6 +42,22 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
       onUploaded?.();
     } catch (err) {
       console.log("Delete error:", err);
+    }
+  };
+
+  // ADMIN: save edited video
+  const saveEdit = async () => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/admin/update/${editData._id}`,
+        editData
+      );
+      // refresh list after update
+      onUploaded?.();
+      setEditData(null); // close modal
+    } catch (err) {
+      console.log("Update error:", err);
+      alert("Failed to update video");
     }
   };
 
@@ -56,29 +71,45 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
             <input
               className="w-full mb-2 p-2 bg-gray-800 rounded"
               value={editData.thumbnail}
-              onChange={e => setEditData({ ...editData, thumbnail: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, thumbnail: e.target.value })
+              }
             />
             <input
               className="w-full mb-2 p-2 bg-gray-800 rounded"
               value={editData.channelName}
-              onChange={e => setEditData({ ...editData, channelName: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, channelName: e.target.value })
+              }
             />
             <input
               className="w-full mb-2 p-2 bg-gray-800 rounded"
               value={editData.core}
-              onChange={e => setEditData({ ...editData, core: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, core: e.target.value })
+              }
             />
             <input
               className="w-full mb-4 p-2 bg-gray-800 rounded"
               value={editData.url}
-              onChange={e => setEditData({ ...editData, url: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, url: e.target.value })
+              }
             />
             <div className="flex justify-between">
               <button
                 className="bg-green-600 px-4 py-2 rounded"
-                onClick={() => {
-                  // save edit logic
-                  setEditData(null);
+                onClick={async () => {
+                  try {
+                    await axios.put(
+                      `http://localhost:5000/admin/update/${editData._id}`,
+                      editData
+                    );
+                    setEditData(null);
+                    onUploaded?.(); // refresh list
+                  } catch (err) {
+                    console.error("Update failed:", err);
+                  }
                 }}
               >
                 Save
@@ -97,10 +128,13 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
       {/* VIDEO GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {videos.map((v) => {
-          const isFavorite = likedVideos.some(fav => fav._id === v._id);
+          const isFavorite = likedVideos.some((fav) => fav._id === v._id);
 
           return (
-            <div key={v._id} className="p-4 rounded-xl border border-gray-600/40 hover:border-purple-500">
+            <div
+              key={v._id}
+              className="p-4 rounded-xl border border-gray-600/40 hover:border-purple-500"
+            >
               <div className="text-white text-sm">{v.thumbnail}</div>
               <p className="mt-2 text-blue-300">{v.channelName}</p>
               <span className="text-xs text-gray-300">{v.core}</span>
