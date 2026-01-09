@@ -1,13 +1,27 @@
 import { useState } from "react";
 import { Bot, Send } from "lucide-react";
+import axios from "axios";
 
 function AskAI() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
+ 
+const askAI = async () => {
+  try {
+    await axios.post(
+      "http://localhost:5000/api/ai/chat",
+      { message: question }, // 👈 FIX
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error ai chat:", error.response?.data || error);
+  }
+};
 
-  const askAI = () => {
-    console.log(question);
-  };
 
   return (
     <>
