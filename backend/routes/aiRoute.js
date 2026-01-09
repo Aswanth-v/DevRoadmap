@@ -7,6 +7,7 @@ const client = new OpenAI({
   baseURL: "https://router.huggingface.co/v1",
   apiKey: process.env.HF_API_KEY,
 });
+
 /**
  * Utility: timeout wrapper
  */
@@ -20,29 +21,31 @@ function withTimeout(promise, ms) {
 }
 
 router.post("/chat", async (req, res) => {
+  console.log("RAW BODY:", req.body);
+
   const { message } = req.body;
 
   /* -------------------- INPUT VALIDATION -------------------- */
 
-  // 400 – missing field
   if (message === undefined) {
     return res.status(400).json({
       error: "Message field is required",
     });
   }
-  // 422 – wrong data type
+
   if (typeof message !== "string") {
     return res.status(422).json({
       error: "Message must be a string",
     });
   }
-  // 400 – empty or whitespace
+
   if (!message.trim()) {
     return res.status(400).json({
       error: "Message cannot be empty",
     });
   }
-  /* AI CALL */
+
+  /* -------------------- AI CALL -------------------- */
   try {
     const completion = await withTimeout(
       client.chat.completions.create({
@@ -51,24 +54,29 @@ router.post("/chat", async (req, res) => {
         temperature: 0.7,
         max_tokens: 200,
       }),
-      10_000 // 10 seconds timeout
+      10_000
     );
 
-    // Defensive check (AI APIs can return weird shapes)
+    // 🔍 FULL RAW AI RESPONSE
+    console.log("AI RAW RESPONSE:", completion);
+
     const reply =
       completion?.choices?.[0]?.message?.content ??
       "Sorry, I could not generate a response.";
 
+    // 🔍 FINAL EXTRACTED TEXT
+    console.log("AI FINAL REPLY:", reply);
+
     return res.json({ reply });
   } catch (err) {
-    console.error("AI error:", err);
-    // 503 – AI timeout / upstream failure
+    console.error("AI ERROR:", err);
+
     if (err.message === "AI_TIMEOUT") {
       return res.status(503).json({
         error: "AI service is currently unavailable. Please try again later.",
       });
     }
-    // 500 – unknown server error
+
     return res.status(500).json({
       error: "Internal server error",
     });
