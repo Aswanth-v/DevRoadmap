@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 const PORT = 5000;
-
+  
 // CORS config
 app.use(
   cors({
@@ -24,6 +24,10 @@ app.use(
 
 app.use(express.json());
 
+app.use(express.json());
+
+
+app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/admin", adminRouter);
