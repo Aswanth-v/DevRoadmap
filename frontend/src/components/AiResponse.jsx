@@ -77,7 +77,30 @@ const askAI = async () => {
           </button>
         </div>
       </div>
+ {showAI && (
+  <div className="fixed top-20 right-4 w-[380px] h-[70vh] bg-transparent shadow-2xl rounded-xl flex flex-col border z-50">
+    
+    {/* Header */}
+    <div className="flex items-center justify-between px-4 py-3 border-b bg-gray-50 rounded-t-xl">
+      <span className="font-semibold text-gray-700">AI Response</span>
+      <button
+        onClick={() => setShowAI(false)}
+        className="text-gray-500 hover:text-red-500 text-lg"
+      >
+        ✕
+      </button>
+    </div>
 
+    {/* Content */}
+    <div className="flex-1 overflow-y-auto p-4 text-gray-800 text-sm leading-relaxed">
+      {loading ? (
+        <p className="text-gray-500 italic">AI is thinking…</p>
+      ) : (
+        <p>{aiReply}</p>
+      )}
+    </div>
+  </div>
+)}
 
 
     </>
