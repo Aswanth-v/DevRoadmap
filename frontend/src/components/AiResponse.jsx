@@ -5,10 +5,11 @@ import axios from "axios";
 function AskAI() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
  
 const askAI = async () => {
   try {
-    await axios.post(
+   const response= await axios.post(
       "http://localhost:5000/api/ai/chat",
       { message: question }, // 👈 FIX
       {
@@ -16,7 +17,10 @@ const askAI = async () => {
           "Content-Type": "application/json",
         },
       }
+      
     );
+    console.log("AI RESPONSE:", response.data);
+    console.log("AI REPLY TEXT:", response.data.reply);
   } catch (error) {
     console.error("Error ai chat:", error.response?.data || error);
   }
