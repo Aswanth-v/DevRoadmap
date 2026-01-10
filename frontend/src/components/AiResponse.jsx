@@ -130,7 +130,7 @@ function AskAI() {
               AI Response
             </span>
             <button
-              onClick={() => setShowAI(false)}
+              onClick={() => {setShowAI(false); setOpen(false);}}
               className="text-gray-500 hover:text-red-500 text-lg"
             >
               ✕
