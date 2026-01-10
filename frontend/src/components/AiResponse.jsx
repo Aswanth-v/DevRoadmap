@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // ✅ ADDED useEffect
 import { Bot, Send } from "lucide-react";
 import axios from "axios";
 
@@ -9,8 +9,10 @@ function AskAI() {
   const [loading, setLoading] = useState(false);
   const [showAI, setShowAI] = useState(false);
 
-  // ✅ ADDED: session-only history
   const [aiHistory, setAiHistory] = useState([]);
+
+  // ✅ ADDED: typing animation state
+  const [typedText, setTypedText] = useState("");
 
   const askAI = async () => {
     try {
@@ -29,7 +31,6 @@ function AskAI() {
       setAiReply(response.data.reply);
       setShowAI(true);
 
-      // ✅ ADDED: store each reply
       setAiHistory((prev) => [
         ...prev,
         {
@@ -45,9 +46,29 @@ function AskAI() {
     }
   };
 
+  // ✅ ADDED: typing effect logic (runs only for latest reply)
+  useEffect(() => {
+    if (!aiHistory.length) return;
+
+    const latestAnswer = aiHistory[aiHistory.length - 1].answer;
+    let index = 0;
+
+    setTypedText("");
+
+    const interval = setInterval(() => {
+      setTypedText((prev) => prev + latestAnswer[index]);
+      index++;
+
+      if (index >= latestAnswer.length) {
+        clearInterval(interval);
+      }
+    }, 15); // fast typing speed
+
+    return () => clearInterval(interval);
+  }, [aiHistory]);
+
   return (
     <>
-      {/* AI Logo Button */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
@@ -57,7 +78,6 @@ function AskAI() {
         </button>
       )}
 
-      {/* Chat Box */}
       <div
         className={`
           fixed bottom-6 right-6 w-72 p-3 rounded-xl shadow-lg
@@ -68,8 +88,10 @@ function AskAI() {
         `}
       >
         <div className="flex justify-between items-center mb-2">
-          <span className="font-medium bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent">AI Assistant</span>
-          <button onClick={() => {setOpen(false); setShowAI(false)}} >x</button>
+          <span className="font-medium bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent">
+            AI Assistant
+          </span>
+          <button onClick={() => { setOpen(false); setShowAI(false); }}>x</button>
         </div>
 
         <div className="flex gap-2">
@@ -93,12 +115,20 @@ function AskAI() {
         </div>
       </div>
 
-      {/* AI Response Panel */}
       {showAI && (
-        <div className="fixed top-20 right-4 w-[380px] h-[70vh] bg-transparent shadow-2xl rounded-xl flex flex-col border-green-800 border z-50">
-          {/* Header */}
+        <div
+          className="
+            fixed top-20 right-4 w-[380px] h-[70vh]
+            bg-transparent shadow-2xl rounded-xl
+            flex flex-col border-green-800 border z-50
+            transform transition-all duration-300 ease-out
+            animate-ai-panel
+          "
+        >
           <div className="flex items-center justify-between px-4 py-3 border-b border-green-800 bg-transparent rounded-t-xl">
-            <span className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent">AI Response</span>
+            <span className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent">
+              AI Response
+            </span>
             <button
               onClick={() => setShowAI(false)}
               className="text-gray-500 hover:text-red-500 text-lg"
@@ -107,32 +137,32 @@ function AskAI() {
             </button>
           </div>
 
-          {/* Content */}
-     <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed space-y-4">
-  {aiHistory.map((item) => (
-    <div
-      key={item.id}
-      className="bg-transparent rounded-lg p-3bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent"
-    >
-      <p className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent mb-1">
-        You
-        
-      </p>
-      <p className="mb-2 text-white">{item.question}</p>
+          <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed space-y-4">
+            {aiHistory.map((item) => (
+              <div
+                key={item.id}
+                className="bg-transparent rounded-lg p-3bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent"
+              >
+                <p className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent mb-1">
+                  You
+                </p>
+                <p className="mb-2 text-white">{item.question}</p>
 
-      <p className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent mb-1">
-        AI
-       
-      </p>
-      <p className="whitespace-pre-wrap text-white">{item.answer}</p>
-    </div>
-  ))}
+                <p className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent mb-1">
+                  AI
+                </p>
+                <p className="whitespace-pre-wrap text-white">
+                  {item.id === aiHistory[aiHistory.length - 1]?.id
+                    ? typedText
+                    : item.answer}
+                </p>
+              </div>
+            ))}
 
-  {loading && (
-    <p className="text-gray-500 italic">AI is thinking…</p>
-  )}
-</div>
-
+            {loading && (
+              <p className="text-gray-500 italic">AI is thinking…</p>
+            )}
+          </div>
         </div>
       )}
     </>
