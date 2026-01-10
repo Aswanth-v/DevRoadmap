@@ -108,24 +108,31 @@ function AskAI() {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed space-y-4">
-            {aiHistory.map((item) => (
-              <div
-                key={item.id}
-                className="bg-gray-100 rounded-lg p-3 text-gray-800"
-              >
-                <p className="font-semibold text-gray-600 mb-1">You</p>
-                <p className="mb-2">{item.question}</p>
+     <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed space-y-4">
+  {aiHistory.map((item) => (
+    <div
+      key={item.id}
+      className="bg-transparent rounded-lg p-3 text-gray-800"
+    >
+      <p className="font-semibold text-gray-500 mb-1">
+        You
+        <span className="block w-12 h-[1px] bg-gray-600 mt-0"></span>
+      </p>
+      <p className="mb-2 text-white">{item.question}</p>
 
-                <p className="font-semibold text-gray-600 mb-1">AI</p>
-                <p className="whitespace-pre-wrap">{item.answer}</p>
-              </div>
-            ))}
+      <p className="font-semibold text-gray-500 mb-1">
+        AI
+        <span className="block w-12 h-[1px] bg-gray-600 mt-0"></span>
+      </p>
+      <p className="whitespace-pre-wrap text-white">{item.answer}</p>
+    </div>
+  ))}
 
-            {loading && (
-              <p className="text-gray-500 italic">AI is thinking…</p>
-            )}
-          </div>
+  {loading && (
+    <p className="text-gray-500 italic">AI is thinking…</p>
+  )}
+</div>
+
         </div>
       )}
     </>
