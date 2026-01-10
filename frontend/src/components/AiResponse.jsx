@@ -5,7 +5,10 @@ import axios from "axios";
 function AskAI() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+const [aiReply, setAiReply] = useState("");
+const [loading, setLoading] = useState(false);
+const [showAI, setShowAI] = useState(false);
+
  
 const askAI = async () => {
   try {
@@ -19,8 +22,8 @@ const askAI = async () => {
       }
       
     );
-    console.log("AI RESPONSE:", response.data);
-    console.log("AI REPLY TEXT:", response.data.reply);
+       setAiReply(response.data.reply)
+       setShowAI(true);
   } catch (error) {
     console.error("Error ai chat:", error.response?.data || error);
   }
@@ -74,6 +77,9 @@ const askAI = async () => {
           </button>
         </div>
       </div>
+
+
+
     </>
   );
 }
