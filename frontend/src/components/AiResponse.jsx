@@ -68,8 +68,8 @@ function AskAI() {
         `}
       >
         <div className="flex justify-between items-center mb-2">
-          <span className="font-medium text-neutral-950">AI Assistant</span>
-          <button onClick={() => setOpen(false)}>x</button>
+          <span className="font-medium bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent">AI Assistant</span>
+          <button onClick={() => {setOpen(false); setShowAI(false)}} >x</button>
         </div>
 
         <div className="flex gap-2">
@@ -95,10 +95,10 @@ function AskAI() {
 
       {/* AI Response Panel */}
       {showAI && (
-        <div className="fixed top-20 right-4 w-[380px] h-[70vh] bg-transparent shadow-2xl rounded-xl flex flex-col border z-50">
+        <div className="fixed top-20 right-4 w-[380px] h-[70vh] bg-transparent shadow-2xl rounded-xl flex flex-col border-green-800 border z-50">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b bg-gray-50 rounded-t-xl">
-            <span className="font-semibold text-gray-700">AI Response</span>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-green-800 bg-transparent rounded-t-xl">
+            <span className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent">AI Response</span>
             <button
               onClick={() => setShowAI(false)}
               className="text-gray-500 hover:text-red-500 text-lg"
@@ -112,17 +112,17 @@ function AskAI() {
   {aiHistory.map((item) => (
     <div
       key={item.id}
-      className="bg-transparent rounded-lg p-3 text-gray-800"
+      className="bg-transparent rounded-lg p-3bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent"
     >
-      <p className="font-semibold text-gray-500 mb-1">
+      <p className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent mb-1">
         You
-        <span className="block w-12 h-[1px] bg-gray-600 mt-0"></span>
+        
       </p>
       <p className="mb-2 text-white">{item.question}</p>
 
-      <p className="font-semibold text-gray-500 mb-1">
+      <p className="font-semibold bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent mb-1">
         AI
-        <span className="block w-12 h-[1px] bg-gray-600 mt-0"></span>
+       
       </p>
       <p className="whitespace-pre-wrap text-white">{item.answer}</p>
     </div>
