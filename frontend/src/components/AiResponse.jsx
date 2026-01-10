@@ -5,30 +5,45 @@ import axios from "axios";
 function AskAI() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
-const [aiReply, setAiReply] = useState("");
-const [loading, setLoading] = useState(false);
-const [showAI, setShowAI] = useState(false);
+  const [aiReply, setAiReply] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showAI, setShowAI] = useState(false);
 
- 
-const askAI = async () => {
-  try {
-   const response= await axios.post(
-      "http://localhost:5000/api/ai/chat",
-      { message: question }, // 👈 FIX
-      {
-        headers: {
-          "Content-Type": "application/json",
+  // ✅ ADDED: session-only history
+  const [aiHistory, setAiHistory] = useState([]);
+
+  const askAI = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.post(
+        "http://localhost:5000/api/ai/chat",
+        { message: question },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setAiReply(response.data.reply);
+      setShowAI(true);
+
+      // ✅ ADDED: store each reply
+      setAiHistory((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          question,
+          answer: response.data.reply,
         },
-      }
-      
-    );
-       setAiReply(response.data.reply)
-       setShowAI(true);
-  } catch (error) {
-    console.error("Error ai chat:", error.response?.data || error);
-  }
-};
-
+      ]);
+    } catch (error) {
+      console.error("Error ai chat:", error.response?.data || error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -42,7 +57,7 @@ const askAI = async () => {
         </button>
       )}
 
-      {/* Chat Box (ALWAYS mounted for animation) */}
+      {/* Chat Box */}
       <div
         className={`
           fixed bottom-6 right-6 w-72 p-3 rounded-xl shadow-lg
@@ -77,32 +92,42 @@ const askAI = async () => {
           </button>
         </div>
       </div>
- {showAI && (
-  <div className="fixed top-20 right-4 w-[380px] h-[70vh] bg-transparent shadow-2xl rounded-xl flex flex-col border z-50">
-    
-    {/* Header */}
-    <div className="flex items-center justify-between px-4 py-3 border-b bg-gray-50 rounded-t-xl">
-      <span className="font-semibold text-gray-700">AI Response</span>
-      <button
-        onClick={() => setShowAI(false)}
-        className="text-gray-500 hover:text-red-500 text-lg"
-      >
-        ✕
-      </button>
-    </div>
 
-    {/* Content */}
-    <div className="flex-1 overflow-y-auto p-4 text-gray-800 text-sm leading-relaxed">
-      {loading ? (
-        <p className="text-gray-500 italic">AI is thinking…</p>
-      ) : (
-        <p>{aiReply}</p>
+      {/* AI Response Panel */}
+      {showAI && (
+        <div className="fixed top-20 right-4 w-[380px] h-[70vh] bg-transparent shadow-2xl rounded-xl flex flex-col border z-50">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b bg-gray-50 rounded-t-xl">
+            <span className="font-semibold text-gray-700">AI Response</span>
+            <button
+              onClick={() => setShowAI(false)}
+              className="text-gray-500 hover:text-red-500 text-lg"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed space-y-4">
+            {aiHistory.map((item) => (
+              <div
+                key={item.id}
+                className="bg-gray-100 rounded-lg p-3 text-gray-800"
+              >
+                <p className="font-semibold text-gray-600 mb-1">You</p>
+                <p className="mb-2">{item.question}</p>
+
+                <p className="font-semibold text-gray-600 mb-1">AI</p>
+                <p className="whitespace-pre-wrap">{item.answer}</p>
+              </div>
+            ))}
+
+            {loading && (
+              <p className="text-gray-500 italic">AI is thinking…</p>
+            )}
+          </div>
+        </div>
       )}
-    </div>
-  </div>
-)}
-
-
     </>
   );
 }
