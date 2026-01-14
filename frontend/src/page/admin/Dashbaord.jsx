@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Users, Star, Crown, LayoutDashboard, LogOut, Menu } from "lucide-react";
-import { useSelector, useDispatch, } from "react-redux";
+import { Users, Star, Crown, LayoutDashboard, LogOut, Menu, Settings } from "lucide-react";
+import { useDispatch } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-black via-slate-900 to-purple-900 text-white">
 
@@ -31,13 +31,11 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="flex flex-col gap-2 px-4">
           <NavItem icon={<LayoutDashboard />} text="Dashboard" open={open} />
-          <NavItem icon={<Crown />} text="Add Exclusive" open={open} onClick={()=>navigate('/exclusive')} />
+          <NavItem icon={<Crown />} text="Exclusive Settings" open={open} onClick={() => navigate("/exclusive")} />
         </nav>
 
-        {/* Logout Button */}
         <div className="mt-auto px-4">
           <NavItem
             icon={<LogOut />}
@@ -51,50 +49,61 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="flex-1 p-8 overflow-y-auto">
-        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+        <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
           <LayoutDashboard size={28} className="text-purple-400" />
-          Dashboard Overview
+          Admin Overview
         </h2>
 
-        {/* Stats Cards */}
+        <p className="text-sm text-white/60 mb-6">
+          Reference metrics for admin layout and configuration preview
+        </p>
+
+        {/* Stats Cards (STATIC / CONFIGURATION DATA) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
           <StatCard
-            title="Total Users"
-            value="1,204"
+            title="Max User Capacity"
+            value="10,000"
+            subtitle="System limit"
             icon={<Users size={40} className="text-blue-400" />}
           />
 
           <StatCard
-            title="Exclusive Views"
-            value="8,456"
+            title="Exclusive Content Slots"
+            value="50"
+            subtitle="Admin controlled"
             icon={<Star size={40} className="text-yellow-400" />}
           />
 
           <StatCard
-            title="Favorites Marked"
-            value="3,982"
+            title="Engagement Threshold"
+            value="75%"
+            subtitle="Recommendation baseline"
             icon={<Crown size={40} className="text-pink-400" />}
           />
 
           <StatCard
-            title="New Registrations"
-            value="124"
-            icon={<Users size={40} className="text-green-400" />}
+            title="Daily Upload Limit"
+            value="20"
+            subtitle="Per admin"
+            icon={<Settings size={40} className="text-green-400" />}
           />
 
         </div>
 
+        <p className="mt-4 text-xs text-white/50">
+          *All values shown are static reference and configuration metrics. No live analytics applied.
+        </p>
+
         {/* Instructions */}
         <div className="mt-12 bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
-          <h3 className="text-xl font-semibold mb-4">Admin Instruction</h3>
+          <h3 className="text-xl font-semibold mb-4">Admin Guidelines</h3>
 
           <ul className="space-y-4">
-            <ActivityItem text="Login every time to access admin tools." />
-            <ActivityItem text="Add only important and useful videos." />
-            <ActivityItem text="Verify content before adding to Exclusive." />
-            <ActivityItem text="Ensure video links and thumbnails are valid." />
-            <ActivityItem text="Remove outdated or duplicate content regularly." />
+            <ActivityItem text="Use this panel to configure platform limits and settings." />
+            <ActivityItem text="Exclusive content slots are manually controlled." />
+            <ActivityItem text="Threshold values guide moderation decisions." />
+            <ActivityItem text="This dashboard represents UI structure only." />
           </ul>
         </div>
       </main>
@@ -109,7 +118,7 @@ function NavItem({ icon, text, open, logout, onClick }) {
     <button
       onClick={onClick}
       className={`flex items-center gap-4 w-full px-4 py-3 rounded-xl transition-all
-        ${logout 
+        ${logout
           ? "text-red-400 hover:bg-red-400/10 border border-red-400/40"
           : "hover:bg-white/20"
         }`}
@@ -122,14 +131,19 @@ function NavItem({ icon, text, open, logout, onClick }) {
   );
 }
 
-function StatCard({ title, value, icon }) {
+function StatCard({ title, value, subtitle, icon }) {
   return (
-    <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-lg hover:shadow-purple-500/30 transition">
+    <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-lg">
       <div className="flex items-center justify-between">
         <h4 className="text-lg font-medium">{title}</h4>
         {icon}
       </div>
+
       <p className="text-3xl font-bold mt-3">{value}</p>
+
+      <p className="text-xs text-white/60 mt-1">
+        {subtitle}
+      </p>
     </div>
   );
 }
@@ -137,7 +151,7 @@ function StatCard({ title, value, icon }) {
 function ActivityItem({ text }) {
   return (
     <li className="flex items-center gap-3 text-white/80 bg-white/5 p-3 rounded-xl border border-white/10">
-      <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+      <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
       {text}
     </li>
   );
