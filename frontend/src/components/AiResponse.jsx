@@ -137,7 +137,7 @@ function AskAI() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed space-y-4 bg-neutral-600">
             {aiHistory.map((item) => (
               <div
                 key={item.id}
