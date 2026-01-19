@@ -118,11 +118,12 @@ function AskAI() {
       {showAI && (
         <div
           className="
-            fixed top-20 right-4 w-[380px] h-[70vh]
+            fixed top-20 right-2 w-[380px] h-[70vh] max-sm:w-full sm:ml-9 
             bg-transparent shadow-2xl rounded-xl
             flex flex-col border-green-800 border z-50
             transform transition-all duration-300 ease-out
             animate-ai-panel
+            
           "
         >
           <div className="flex items-center justify-between px-4 py-3 border-b border-green-800 bg-transparent rounded-t-xl">
