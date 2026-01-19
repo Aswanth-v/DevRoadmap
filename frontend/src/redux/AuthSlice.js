@@ -20,7 +20,7 @@ export const userRegisterAction = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${process.env.REACT_APP_API_URL}/api/auth/register`,
         formData,
         { withCredentials: true }
       );
@@ -37,7 +37,7 @@ export const userLoginAction = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
         formData,
         { withCredentials: true }
       );

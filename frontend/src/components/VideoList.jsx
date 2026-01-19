@@ -14,7 +14,7 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
   // Fetch all videos
   const fetchVideos = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/user/all");
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/all`);
       setVideos(res.data.videos);
     } catch (err) {
       console.log("Error fetching videos:", err);
@@ -38,7 +38,7 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
   // ADMIN: delete video
   const itemDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/admin/delete/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/admin/delete/${id}`);
       onUploaded?.();
     } catch (err) {
       console.log("Delete error:", err);
@@ -49,7 +49,7 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
   const saveEdit = async () => {
     try {
       const res = await axios.patch(
-        `http://localhost:5000/admin/update/${editData._id}`,
+        `${process.env.REACT_APP_API_URL}/admin/update/${editData._id}`,
         editData
       );
       // refresh list after update
@@ -102,7 +102,7 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
                 onClick={async () => {
                   try {
                     await axios.put(
-                      `http://localhost:5000/admin/update/${editData._id}`,
+                      `${process.env.REACT_APP_API_URL}/admin/update/${editData._id}`,
                       editData
                     );
                     setEditData(null);

@@ -11,7 +11,7 @@ import aiRouter from "./routes/aiRoute.js"
 dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
   
 // CORS config
 app.use(

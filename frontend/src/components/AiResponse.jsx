@@ -19,7 +19,7 @@ function AskAI() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:5000/api/ai/chat",
+        `${process.env.REACT_APP_API_URL}/api/ai/chat`,
         { message: question },
         {
           headers: {

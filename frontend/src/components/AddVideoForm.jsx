@@ -20,7 +20,7 @@ const AddVideoForm = ({ onUploaded }) => {
     };
 
     try {
-      await axios.post("http://localhost:5000/admin/upload", newVideo);
+      await axios.post(`${process.env.REACT_APP_API_URL}/admin/upload`, newVideo);
 
       setMainlanguages("");
       setUrl("");
