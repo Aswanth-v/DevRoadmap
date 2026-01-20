@@ -5,7 +5,6 @@ import axios from "axios";
 function AskAI() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
-  const [aiReply, setAiReply] = useState("");
   const [loading, setLoading] = useState(false);
   const [showAI, setShowAI] = useState(false);
 

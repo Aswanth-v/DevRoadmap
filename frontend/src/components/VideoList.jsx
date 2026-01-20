@@ -46,20 +46,20 @@ const VideoList = ({ refresh, isAdmin, onUploaded }) => {
   };
 
   // ADMIN: save edited video
-  const saveEdit = async () => {
-    try {
-      const res = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/admin/update/${editData._id}`,
-        editData
-      );
-      // refresh list after update
-      onUploaded?.();
-      setEditData(null); // close modal
-    } catch (err) {
-      console.log("Update error:", err);
-      alert("Failed to update video");
-    }
-  };
+  //const saveEdit = async () => {
+  //  try {
+  //    const res = await axios.patch(
+  //      `${process.env.REACT_APP_API_URL}/admin/update/${editData._id}`,
+  //      editData
+  //    );
+  //    // refresh list after update
+  //    onUploaded?.();
+  //    setEditData(null); // close modal
+  //  } catch (err) {
+  //    console.log("Update error:", err);
+  //    alert("Failed to update video");
+  //  }
+  //};
 
   return (
     <>

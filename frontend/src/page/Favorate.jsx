@@ -6,7 +6,7 @@ import { addToFavorites, removeFromFavorites } from "../redux/FavSlice";
 
 const Favorites = () => {
   const favorites = useSelector((state) => state.favorites.videos);
-  const navigate=useNavigate()
+  //const navigate=useNavigate()
   
     const dispatch = useDispatch();
    const toggleLike = (video) => {
