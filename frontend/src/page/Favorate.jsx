@@ -1,12 +1,12 @@
 import { useSelector,useDispatch } from "react-redux";
 import { Home } from "lucide-react";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { addToFavorites, removeFromFavorites } from "../redux/FavSlice";
 
 const Favorites = () => {
   const favorites = useSelector((state) => state.favorites.videos);
-  //const navigate=useNavigate()
+  const navigate=useNavigate()
   
     const dispatch = useDispatch();
    const toggleLike = (video) => {

@@ -5,6 +5,7 @@ import axios from "axios";
 function AskAI() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
+  //const [aiReply, setAiReply] = useState("");
   const [loading, setLoading] = useState(false);
   const [showAI, setShowAI] = useState(false);
 
@@ -27,7 +28,7 @@ function AskAI() {
         }
       );
 
-      setAiReply(response.data.reply);
+      //setAiReply(response.data.reply);
       setShowAI(true);
 
       setAiHistory((prev) => [
