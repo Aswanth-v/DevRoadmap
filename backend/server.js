@@ -16,7 +16,8 @@ const PORT = process.env.PORT || 5000;
 // CORS config
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://coderoads.netlify.app/"
+  "https://coderoads.netlify.app"
+
 ];
 
 app.use(
