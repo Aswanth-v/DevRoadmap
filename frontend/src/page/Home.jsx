@@ -18,7 +18,7 @@ const Home = () => {
           <h1 className="text-5xl font-extrabold tracking-tight">
             Welcome to{" "}
             <span className="bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent">
-              DevRoadmap
+             CodeRoads
             </span>
           </h1>
           <p className="mt-4 text-lg text-white/70 animate-breath">
